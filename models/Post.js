@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const postStatus = require("./PostStatus");
 const categories = require("./Category");
 const Schema = mongoose.Schema;
+const slugify = require("slugify");
 
 const postSchema = new Schema({
   title: {
@@ -14,7 +15,6 @@ const postSchema = new Schema({
   },
   slug: {
     type: String,
-    required: true,
     unique: true,
     trim: true,
     index: true,
@@ -29,7 +29,7 @@ const postSchema = new Schema({
     type: Number,
     required: true,
     enum: postStatus.map((status) => status.code),
-    default: postStatus[0],
+    default: postStatus[0].code,
   },
   content: {
     type: String,
@@ -70,7 +70,6 @@ postSchema.pre("save", function (next) {
   }
   next();
 });
-
 const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;
