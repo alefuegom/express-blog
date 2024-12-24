@@ -1,5 +1,5 @@
 import { PostDTO } from "../models/dtos/postDTO.dto";
-import { Post } from "../models/entities/post.entity";
+import { IPost, Post } from "../models/entities/post.entity";
 
 class PostService {
   async savePost(postData: PostDTO): Promise<PostDTO> {
@@ -17,6 +17,17 @@ class PostService {
       const posts = await Post.find();
       const result: Array<PostDTO> = posts.map(
         (post: any) => new PostDTO(post)
+      );
+      return result;
+    } catch (error: any) {
+      throw new Error(`Error getting the post list: ${error.message}`);
+    }
+  }
+  async getLastPosts(limit: number = 3): Promise<PostDTO[]> {
+    try {
+      const posts = await Post.find({}).sort({ creationDate: -1 }).limit(limit);
+      const result: Array<PostDTO> = posts.map(
+        (post: IPost) => new PostDTO(post)
       );
       return result;
     } catch (error: any) {

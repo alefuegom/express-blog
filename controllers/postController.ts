@@ -1,3 +1,8 @@
+import {
+  BlogMainPagePost,
+  IBlogMainResponse,
+} from "../models/dtos/blogResponseDTO";
+import { PostDTO } from "../models/dtos/postDTO.dto";
 import { postService } from "../services/postService";
 import { Request, Response } from "express";
 export class PostController {
@@ -31,6 +36,24 @@ export class PostController {
     } catch (error: any) {
       res.status(500).json({
         message: "Error creating the post",
+        error: error.message,
+      });
+    }
+  }
+
+  async getMainPagePost(req: Request, res: Response) {
+    try {
+      const lastPosts: Array<PostDTO> = await postService.getLastPosts(3);
+      const mainPosts = lastPosts.map(
+        (post: PostDTO) => new BlogMainPagePost(post)
+      );
+      const response: IBlogMainResponse = {
+        mainPosts,
+      };
+      return res.status(200).json(response);
+    } catch (error: any) {
+      res.status(500).json({
+        message: "Error getting the post list",
         error: error.message,
       });
     }
