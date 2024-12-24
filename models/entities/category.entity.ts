@@ -1,5 +1,9 @@
 // TODO: Add more categories
-const categories = [
+export interface ICategory {
+  code: string;
+}
+
+export const categories = [
   { code: "404-blog" },
   { code: "tips" },
   { code: "frameworks" },
@@ -7,5 +11,3 @@ const categories = [
   { code: "soft-skills" },
   { code: "behind-scenes" },
 ];
-
-module.exports = categories;

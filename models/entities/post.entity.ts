@@ -1,8 +1,21 @@
-const mongoose = require("mongoose");
-const postStatus = require("./PostStatus");
-const categories = require("./Category");
-const Schema = mongoose.Schema;
-const slugify = require("slugify");
+import mongoose, { Schema, Document } from "mongoose";
+import slugify from "slugify";
+import { postStatus } from "./postStatus.entity";
+import { categories } from "./category.entity";
+export interface IPost extends Document {
+  title: string;
+  shortDescription: string;
+  slug: string;
+  language: string;
+  status: number;
+  content: string;
+  creationDate: Date;
+  publishDate?: Date;
+  category: string;
+  views: number;
+  image?: string;
+  relatedPost?: string[];
+}
 
 const postSchema = new Schema({
   title: {
@@ -70,6 +83,4 @@ postSchema.pre("save", function (next) {
   }
   next();
 });
-const Post = mongoose.model("Post", postSchema);
-
-module.exports = Post;
+export const Post = mongoose.model<IPost>("Post", postSchema);
