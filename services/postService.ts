@@ -23,9 +23,25 @@ class PostService {
       throw new Error(`Error getting the post list: ${error.message}`);
     }
   }
-  async getLastPosts(limit: number = 3): Promise<PostDTO[]> {
+  /**
+   * Retrieves a post list providing search criteria.
+   *
+   * By default, it retrieves a post list that contains
+   * the last three posts.
+   *
+   * @param {*} [query={}]
+   * @param {number} [limit=3]
+   * @param {*} [sortQuery={ creationDate: -1 }]
+   * @return {*}  {Promise<Array<PostDTO>>}
+   * @memberof PostService
+   */
+  async getGenericPostsByQuery(
+    query: any = {},
+    limit: number = 3,
+    sortQuery: any = { creationDate: -1 }
+  ): Promise<Array<PostDTO>> {
     try {
-      const posts = await Post.find({}).sort({ creationDate: -1 }).limit(limit);
+      const posts = await Post.find(query).sort(sortQuery).limit(limit);
       const result: Array<PostDTO> = posts.map(
         (post: IPost) => new PostDTO(post)
       );

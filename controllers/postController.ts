@@ -43,7 +43,8 @@ export class PostController {
 
   async getMainPagePost(req: Request, res: Response) {
     try {
-      const lastPosts: Array<PostDTO> = await postService.getLastPosts(3);
+      const lastPosts: Array<PostDTO> =
+        await postService.getGenericPostsByQuery();
       const mainPosts = lastPosts.map(
         (post: PostDTO) => new BlogMainPagePost(post)
       );
